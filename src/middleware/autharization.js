@@ -20,6 +20,8 @@ export const autharized = async(req, res, next)=>{
 
            let user = await Users.findById(verify._id)
 
+           req.userID = verify._id;
+
            if(!user){
             res.status(401).json({massage : "Not Authorized User..."})
            }
