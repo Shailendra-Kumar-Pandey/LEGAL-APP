@@ -21,9 +21,13 @@ export const AiGetInformation = async(req, res)=>{
             }
         });
 
+        const extract = response?.candidates[0]?.content?.parts[0]?.text;
+
+        // let data = JSON.parse(extract)
+
         return res.status(200).json({
             massage: " Think... AI...",
-            result : response.json()
+            result : extract
         })
         
     } catch (error) {
