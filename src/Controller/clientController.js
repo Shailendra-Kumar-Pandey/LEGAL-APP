@@ -20,10 +20,8 @@ export const AiGetInformation = async(req, res)=>{
                 systemInstruction : "Please return data in json format"
             }
         });
-
+        // response extract 
         const extract = response?.candidates[0]?.content?.parts[0]?.text;
-
-        // let data = JSON.parse(extract)
 
         return res.status(200).json({
             massage: " Think... AI...",
