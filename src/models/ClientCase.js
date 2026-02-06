@@ -22,11 +22,9 @@ const ClientCaseSchema = new mongoose.Schema(
             {
                fileName: {
                 type: String,
-                required: true
                },
                fileURL: {
                 type: String,
-                required: true
                } 
             }
         ],

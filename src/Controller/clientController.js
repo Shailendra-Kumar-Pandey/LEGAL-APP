@@ -36,3 +36,25 @@ export const AiGetInformation = async(req, res)=>{
     
     
 }
+
+
+
+export const createCaseAIthinking = async(req, res)=>{
+
+    let userId = req.userID;
+
+    const {problemStatement, location, caseDate } = req.body;
+
+    try {
+        
+        
+
+
+    } catch (error) {
+        return res.status(500).json({
+            error:error,
+            massage: "server error"
+        })
+    }
+
+}
