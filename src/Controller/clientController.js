@@ -105,7 +105,7 @@ export const createCaseAIthinking = async(req, res)=>{
         });
 
         return res.status(200).json({
-            result: response;
+            result: response,
             clientCase:clientCase
         })
 
