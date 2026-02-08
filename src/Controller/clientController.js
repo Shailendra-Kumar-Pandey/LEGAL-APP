@@ -5,13 +5,13 @@ export const AiGetInformation = async(req, res)=>{
 
 
     let {prompt} = req.body;
-    console.log(prompt)
+    // console.log(prompt)
     
     try {
     
         // AI function import
         const ai = new GoogleGenAI({
-            apiKey : "AIzaSyD9sdH_1NiT_ImnzfMOT45qiOsrXzRmzEo"
+            apiKey : "AIzaSyDzUqfXM7RsZ4hniABXuFirMd3GF5eqQbY"
         })
         // AI function import
         const response = await ai.models.generateContent({
@@ -22,11 +22,11 @@ export const AiGetInformation = async(req, res)=>{
             }
         });
         // response extract 
-        const extract = response?.candidates[0]?.content?.parts[0]?.text;
+        // const extract = response?.candidates[0]?.content?.parts[0]?.text;
 
         return res.status(200).json({
             massage: " Think... AI...",
-            result : extract
+            result : response
         })
         
     } catch (error) {
@@ -43,13 +43,13 @@ export const AiGetInformation = async(req, res)=>{
 export const createCaseAIthinking = async(req, res)=>{
 
     let userId = req.userID;
-
+    // console.log(userId)
     const {problemStatement, location, caseDate } = req.body;
     
     if(!problemStatement || !location || !caseDate){
         return res.status(404).json({massage: "All Feild Required..."})
     }
-
+    // console.log("hello")
     try {
         
         let clientCase = ClientCaseModel.create({
@@ -66,8 +66,7 @@ export const createCaseAIthinking = async(req, res)=>{
                 TASK:
                 Analyze the legal case described below and return STRICT JSON ONLY.
 
-                CASE DESCRIPTION:
-                "${problemStatement}"
+                CASE DESCRIPTION: "${problemStatement}"
 
                 RULES:
                 - Return valid JSON only.
@@ -93,7 +92,7 @@ export const createCaseAIthinking = async(req, res)=>{
 
         //AI Part in API giving prompt and thinking this DATA
         const ai = new GoogleGenAI({
-            apiKey : "AIzaSyD9sdH_1NiT_ImnzfMOT45qiOsrXzRmzEo"
+            apiKey : "AIzaSyDzUqfXM7RsZ4hniABXuFirMd3GF5eqQbY"
         })
         // AI function import
         const response = await ai.models.generateContent({
