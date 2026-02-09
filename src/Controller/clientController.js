@@ -103,8 +103,11 @@ export const createCaseAIthinking = async(req, res)=>{
             }
         });
 
+        let extractResponse = response.candidates[0].content.parts[0].text;
+        let realResponse = JSON.parse(extractResponse)
+
         return res.status(200).json({
-            result: response,
+            result: realResponse,
             clientCase:clientCase
         })
 
