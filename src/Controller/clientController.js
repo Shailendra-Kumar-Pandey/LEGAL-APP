@@ -1,5 +1,6 @@
 import { GoogleGenAI } from '@google/genai'
 import ClientCaseModel from '../models/ClientCase.js';
+import AianalysisModel from '../models/Aianalysis.js';
 
 export const AiGetInformation = async(req, res)=>{
 
@@ -52,7 +53,7 @@ export const createCaseAIthinking = async(req, res)=>{
     // console.log("hello")
     try {
         
-        let clientCase = ClientCaseModel.create({
+        let clientCase = await ClientCaseModel.create({
             userId,
             problemStatement,
             location,
@@ -74,7 +75,7 @@ export const createCaseAIthinking = async(req, res)=>{
                 - Do not add extra fields.
                 - If information is missing, make a reasonable legal assumption.
                 - All monetary values must be numbers only.
-                - suggestedIPSSections must be an array of strings.
+                - suggestedIPSSections must be an array of strings and IPS detailes.
 
                 RETURN FORMAT:
                 {
@@ -106,15 +107,28 @@ export const createCaseAIthinking = async(req, res)=>{
         let extractResponse = response.candidates[0].content.parts[0].text;
         let realResponse = JSON.parse(extractResponse)
 
+
+        let AIresponse = await AianalysisModel.create({
+            clientCaseId: clientCase?._id,
+            predictedCaseType: realResponse?.predictedCaseType,
+            caseSeverity: realResponse?.caseSeverity,
+            suggestedIPSSections: realResponse?.suggestedIPSSections,
+            worstCaseOutcome: realResponse?.worstCaseOutcome,
+            estimatedFeeMin: realResponse?.estimatedFeeMin,
+            estimatedFeeMax: realResponse?.estimatedFeeMax,
+            remark : realResponse?.remark 
+        })
+
         return res.status(200).json({
             result: realResponse,
-            clientCase:clientCase
+            clientCase,
+            AIresponse
         })
 
     } catch (error) {
         return res.status(500).json({
             error:error,
-            massage: "server error"
+            massage: `${error} server error`
         })
     }
 
