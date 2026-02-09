@@ -92,7 +92,7 @@ export const createCaseAIthinking = async(req, res)=>{
 
         //AI Part in API giving prompt and thinking this DATA
         const ai = new GoogleGenAI({
-            apiKey : "AIzaSyDzUqfXM7RsZ4hniABXuFirMd3GF5eqQbY"
+            apiKey : "AIzaSyDaIc0lq4S1ZAtNCW2B9LwloeU5I5BvSA4"
         })
         // AI function import
         const response = await ai.models.generateContent({
