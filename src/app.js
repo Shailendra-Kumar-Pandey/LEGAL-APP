@@ -3,11 +3,13 @@ import lawyerRouter from './routes/lawyer.js';
 import clientRouter from './routes/client.js';
 import authRouter from './routes/authUser.js';
 import adminRouter from './routes/admin.js';
+import cors from 'cors';
 
 const app = express();
 
 // Build in Middleware
 app.use(express.json())
+app.use(cors())
 
 // base URL:-  (http://127.0.0.1:5050)
 // Router

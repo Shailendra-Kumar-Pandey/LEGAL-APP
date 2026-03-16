@@ -88,7 +88,7 @@ export const createCaseAIthinking = async(req, res)=>{
                 "remark": "",
                 "typeOfLawyerNeeded": "Criminal" | "Civil" | "Family" | "Corporate" | "Cyber" | "Property"
                 }
-        
+                
         `
 
         //AI Part in API giving prompt and thinking this DATA
