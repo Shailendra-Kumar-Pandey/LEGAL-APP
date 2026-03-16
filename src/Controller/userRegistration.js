@@ -53,7 +53,7 @@ export const Login = async (req, res)=>{
   let {email, password} = req.body;
   // Enter both feild required
   if(!email || !password){
-    return res.status(404).json({massaga: "All fields are Required..."})
+    return res.status(404).json({status : false, massage: "All fields are Required..."})
   }
 
   try {
@@ -61,14 +61,14 @@ export const Login = async (req, res)=>{
     let existingUser = await user.findOne({email});
     // console.log(existingUser)
     if(!existingUser){
-      return res.status(404).json({massage : "Invailid Email..."})
+      return res.status(404).json({status : false, massage : "Invailid Email..."})
     }
     
     // Chack Password Correct or Not
     let isMatch = await bcrypt.compare(password.toString(), existingUser.password)
   
     if(!isMatch){
-      return res.status(404).json({massage : "Invailid Password..."})
+      return res.status(404).json({status : false, massage : "Invailid Password..."})
     }
 
     // chack tha Lawyer Profile is Complte or Not
@@ -78,11 +78,11 @@ export const Login = async (req, res)=>{
       let lawyer = await lawyerProfileModel.findOne({userId: existingUser._id})
   
       if(!lawyer){
-        return res.status(404).json({massage: 'Please complte Profile..'})
+        return res.status(404).json({status : false, massage: 'Please complte Profile..'})
       }
   
       if(lawyer?.status !== 'APPROVED'){
-        return res.status(404).json({massage: `Status: ${lawyer.status}, Please contect tha Admin...`})
+        return res.status(404).json({status : false, massage: `Status: ${lawyer.status}, Please contect tha Admin...`})
       }
 
     }
@@ -91,6 +91,7 @@ export const Login = async (req, res)=>{
     // Send response and Generate Token
     return res.status(200).json({
       massage : "Login Successfully...",
+      status : true,
       token: token(existingUser._id, existingUser.email),   // this Line - function generate Token
       result: {
         _id:existingUser._id,
@@ -101,6 +102,6 @@ export const Login = async (req, res)=>{
       }
     })    
   } catch (error) {
-    return res.status(500).json({massage : `${error} Somthing went wrong...`})    
+    return res.status(500).json({status : false, massage : `${error} Somthing went wrong...`})    
   }
 }
