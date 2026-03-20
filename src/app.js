@@ -11,7 +11,6 @@ const app = express();
 app.use(express.json())
 app.use(cors())
 
-// base URL:-  (http://127.0.0.1:5050)
 // Router
 app.use('/client', clientRouter)
 app.use('/lawyer', lawyerRouter)

@@ -10,7 +10,7 @@ import mongoose from 'mongoose';
 // }
 
 const connectDB = ()=>{
-    mongoose.connect('mongodb://127.0.0.1:27017/Leagal-App')
+    mongoose.connect(process.env.MONGO_URI)
     .then((res)=>{
         console.log("mongoDB is Connected....")
     })

@@ -12,11 +12,11 @@ export const AiGetInformation = async(req, res)=>{
     
         // AI function import
         const ai = new GoogleGenAI({
-            apiKey : "AIzaSyDzUqfXM7RsZ4hniABXuFirMd3GF5eqQbY"
+            apiKey : process.env.GEMINAI_API_KEY
         })
         // AI function import
         const response = await ai.models.generateContent({
-            model: "gemini-3-flash-preview",
+            model: process.env.GEMINAI_MODEL,
             contents: prompt,
             config:{
                 systemInstruction : "Please return data in json format"
@@ -81,7 +81,7 @@ export const createCaseAIthinking = async(req, res)=>{
                 {
                 "predictedCaseType": "",
                 "caseSeverity": "HIGH" | "MEDIUM" | "LOW",
-                "suggestedIPSSections": [],
+                "suggestedIPCSections": [],
                 "worstCaseOutcome": "",
                 "estimatedFeeMin": 0,
                 "estimatedFeeMax": 0,
@@ -93,11 +93,11 @@ export const createCaseAIthinking = async(req, res)=>{
 
         //AI Part in API giving prompt and thinking this DATA
         const ai = new GoogleGenAI({
-            apiKey : "AIzaSyDaIc0lq4S1ZAtNCW2B9LwloeU5I5BvSA4"
+            apiKey : process.env.GEMINAI_API_KEY
         })
         // AI function import
         const response = await ai.models.generateContent({
-            model: "gemini-3-flash-preview",
+            model: process.env.GEMINAI_MODEL,
             contents: prompt,
             config:{
                 systemInstruction : "Please return data in json format"
@@ -112,7 +112,7 @@ export const createCaseAIthinking = async(req, res)=>{
             clientCaseId: clientCase?._id,
             predictedCaseType: realResponse?.predictedCaseType,
             caseSeverity: realResponse?.caseSeverity,
-            suggestedIPSSections: realResponse?.suggestedIPSSections,
+            suggestedIPCSections: realResponse.suggestedIPCSections,
             worstCaseOutcome: realResponse?.worstCaseOutcome,
             estimatedFeeMin: realResponse?.estimatedFeeMin,
             estimatedFeeMax: realResponse?.estimatedFeeMax,
