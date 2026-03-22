@@ -82,7 +82,7 @@ export const Login = async (req, res)=>{
       }
   
       if(lawyer?.status !== 'APPROVED'){
-        return res.status(404).json({status : false, massage: `Status: ${lawyer.status}, Please contect tha Admin...`})
+        return res.status(404).json({status : false, massage: `Status: ${lawyer.status}, Please contact tha Admin...`})
       }
 
     }

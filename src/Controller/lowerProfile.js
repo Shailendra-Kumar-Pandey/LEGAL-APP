@@ -1,25 +1,37 @@
 import lawyerModel from '../models/LawyerProfile.js'
+import Users from '../models/Users.js';
 
 
 export const completeProfile = async (req, res)=>{
     
-    const { userId, barCouncilId, degree, lawyerType, experienceYears, totalCases, wonCases, lostCases, winRatio, feeMin, feeMax} = req.body;
+    const { email, barCouncilId, degree, lawyerType, experienceYears, totalCases, wonCases, lostCases, winRatio, feeMin, feeMax} = req.body;
 
-    if(!userId || !barCouncilId || !degree || !lawyerType){
-        return res.status(400).json({massaga : 'All Field are required...'})
+    if(!email || !barCouncilId || !degree || !lawyerType){
+        return res.status(400).json({success: false, massage : 'All Field are required...'})
     }
 
     try {
-        let existingLawyer = await lawyerModel.findOne({userId})
-        if(existingLawyer){
-            return res.status(400).json({massaga : 'Lawyer is already Existing...'})
+        let existUser = await Users.findOne({email})
+
+        if(!existUser){
+            return res.status(404).json({success:false, massage: " This email Id Not a Vailid..."})
         }
 
-        let lawyer = await lawyerModel.create({ userId, barCouncilId, degree, lawyerType, experienceYears, totalCases, wonCases, lostCases, winRatio, feeMin, feeMax})
+        if(existUser.role !== 'LAWYER'){
+            return res.status(404).json({success:false, massage:`Please Enter Vailid Email! You should be ${existUser.role}`})
+        }
 
-        return res.status(201).json({massage: 'Create a Profile Successfully..', result: lawyer})
+        let existingLawyer = await lawyerModel.findOne({userId:existUser._id})
+        if(existingLawyer){
+            return res.status(400).json({success:false, massage : 'Lawyer is already Existing...'})
+        }
+
+        let lawyer = await lawyerModel.create({ 
+            userId:existUser._id, barCouncilId, degree, lawyerType, experienceYears, totalCases, wonCases, lostCases, winRatio, feeMin, feeMax})
+
+        return res.status(201).json({success:true,massage: 'Create a Profile Successfully..', result: lawyer})
 
     } catch (error) {
-        return res.status(201).json({massage: 'create a Profile..'})
+        return res.status(500).json({success:false, massage: `Server Error! ${error}`})
     }
 }
