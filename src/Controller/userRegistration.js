@@ -9,17 +9,17 @@ export const Ragistration = async (req, res) => {
 
   // chacking all field required
   if (!name || !email || !Phone || !password || !role) {
-    return res.status(400).json({success:false, massage: "All fields are required..." });
+    return res.status(400).json({success:false, message: "All fields are required..." });
   }
   
   // Email vailidation field necessary @ and .com 
   if (!email.includes('@' && '.com')) {
-    return res.status(400).json({success:false, massage: "Please Enter Vailid Email..." });
+    return res.status(400).json({success:false, message: "Please Enter Vailid Email..." });
   }
 
   // Chack Database inside Email is unique
   if(await user.findOne({email:email})){
-    return res.status(400).json({success:false,massage:"Email Already Exit..."})
+    return res.status(400).json({success:false,message:"Email Already Exit..."})
   }
   
   try {
@@ -33,7 +33,7 @@ export const Ragistration = async (req, res) => {
     })
     // Send response client Side
     return res.status(201).json({
-      massage : " New User Create Successfully...",
+      message : " New User Create Successfully...",
       success:true,
       result : {
         _id:newUser._id,
@@ -44,7 +44,7 @@ export const Ragistration = async (req, res) => {
       }
     })
   } catch (error) {
-    return res.status(500).json({success:false, massage: `${error} Somthing went wrong...` });
+    return res.status(500).json({success:false, message: `${error} Somthing went wrong...` });
   }
 };
 
@@ -54,7 +54,7 @@ export const Login = async (req, res)=>{
   let {email, password} = req.body;
   // Enter both feild required
   if(!email || !password){
-    return res.status(404).json({success : false, massage: "All fields are Required..."})
+    return res.status(404).json({success : false, message: "All fields are Required..."})
   }
 
   try {
@@ -62,14 +62,14 @@ export const Login = async (req, res)=>{
     let existingUser = await user.findOne({email});
     // console.log(existingUser)
     if(!existingUser){
-      return res.status(404).json({success : false, massage : "Invailid Email..."})
+      return res.status(404).json({success : false, message : "Invailid Email..."})
     }
     
     // Chack Password Correct or Not
     let isMatch = await bcrypt.compare(password.toString(), existingUser.password)
   
     if(!isMatch){
-      return res.status(404).json({success : false, massage : "Invailid Password..."})
+      return res.status(404).json({success : false, message : "Invailid Password..."})
     }
 
     // chack tha Lawyer Profile is Complte or Not
@@ -79,11 +79,11 @@ export const Login = async (req, res)=>{
       let lawyer = await lawyerProfileModel.findOne({userId: existingUser._id})
   
       if(!lawyer){
-        return res.status(404).json({success : false, massage: 'Please complte Profile..'})
+        return res.status(404).json({success : false, message: 'Please complte Profile..'})
       }
   
       if(lawyer?.status !== 'APPROVED'){
-        return res.status(404).json({success : false, massage: `Status: ${lawyer.status}, Please contact tha Admin...`})
+        return res.status(404).json({success : false, message: `Status: ${lawyer.status}, Please contact tha Admin...`})
       }
 
     }
@@ -91,7 +91,7 @@ export const Login = async (req, res)=>{
 
     // Send response and Generate Token
     return res.status(200).json({
-      massage : "Login Successfully...",
+      message : "Login Successfully...",
       status : true,
       token: token(existingUser._id, existingUser.email),   // this Line - function generate Token
       result: {
@@ -103,6 +103,6 @@ export const Login = async (req, res)=>{
       }
     })    
   } catch (error) {
-    return res.status(500).json({success : false, massage : `${error} Somthing went wrong...`})    
+    return res.status(500).json({success : false, message : `${error} Somthing went wrong...`})    
   }
 }

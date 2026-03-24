@@ -6,16 +6,20 @@ export const fetchAllLawyer = async(req, res)=>{
 
     try {
 
-        const allLawyer = await lawyerModel.find()
+        const allLawyer = await lawyerModel.find().populate({
+            path:'userId',
+            select:'-password -__v'
+        }).select('-__v')
 
         res.status(200).json({
-            massage: "GET All Lawyers...",
+            message: "GET All Lawyers...",
+            success:true,
             result: allLawyer
         })
         
     } catch (error) {
     
-        return res.status(500).json({massage: "Server Error..."})
+        return res.status(500).json({success:false, message: "Server Error..."})
     }
     
 }
@@ -29,13 +33,13 @@ export const lawyerStatusChange = async (req, res)=>{
         let lawyerId = req.params.lawyerId;
         // chack send the lawyer Id Or Not 
         if(!lawyerId){
-            return res.status(404).json({massage: "Please Enter Lawyer ID.."})
+            return res.status(404).json({success:false, message: "Please Enter Lawyer ID.."})
         }
 
         let lawyer = await lawyerModel.findOne({userId:lawyerId})
         // Chack lawer data avilable or Not
         if(!lawyer){
-            return res.status(404).json({massage: "Please Enter Vailid Lawyer ID.."})
+            return res.status(404).json({success:false, message: "Please Enter Vailid Lawyer ID.."})
         }
 
         let user = await userModel.findOne(lawyer.userId)
@@ -56,10 +60,10 @@ export const lawyerStatusChange = async (req, res)=>{
         
         await mailSender(to, subject, text, html)
 
-        return res.status(201).json({massage: "Update Lawyer Profile...", result: lawyer})
+        return res.status(201).json({success:true, message: "Update Lawyer Profile...", result: lawyer})
 
     } catch (error) {
-        return res.status(500).json({massage: `${error} Server Error...`,})
+        return res.status(500).json({success:false, message: `${error} Server Error...`,})
     }
 
 }
