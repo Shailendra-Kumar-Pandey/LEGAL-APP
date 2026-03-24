@@ -26,13 +26,13 @@ export const AiGetInformation = async(req, res)=>{
         // const extract = response?.candidates[0]?.content?.parts[0]?.text;
 
         return res.status(200).json({
-            massage: " Think... AI...",
+            success:true, message: " Think... AI...",
             result : response
         })
         
     } catch (error) {
         
-        return res.status(500).json({massage: `${error} Server Error...`})
+        return res.status(500).json({success:false, message: `${error} Server Error...`})
     }    
 
     
@@ -48,7 +48,7 @@ export const createCaseAIthinking = async(req, res)=>{
     const {problemStatement, location, caseDate } = req.body;
     
     if(!problemStatement || !location || !caseDate){
-        return res.status(404).json({massage: "All Feild Required..."})
+        return res.status(404).json({success:false, message: "All Feild Required..."})
     }
     // console.log("hello")
     try {
@@ -120,6 +120,7 @@ export const createCaseAIthinking = async(req, res)=>{
         })
 
         return res.status(200).json({
+            success:true,
             result: realResponse,
             clientCase,
             AIresponse
@@ -128,7 +129,8 @@ export const createCaseAIthinking = async(req, res)=>{
     } catch (error) {
         return res.status(500).json({
             error:error,
-            massage: `${error} server error`
+            success:false,
+             message: `${error} server error`
         })
     }
 

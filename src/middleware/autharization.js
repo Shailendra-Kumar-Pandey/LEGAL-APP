@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 export const autharized = async(req, res, next)=>{
      
     if(!req.headers.authorization){
-        return res.status(401).json({massaga:"Please Enter Token..."})
+        return res.status(401).json({success:false, message:"Please Enter Token..."})
     }
      
     try {
@@ -23,14 +23,14 @@ export const autharized = async(req, res, next)=>{
            req.userID = verify._id;
 
            if(!user){
-            res.status(401).json({massage : "Not Authorized User..."})
+            res.status(401).json({success:false, message : "Not Authorized User..."})
            }
       
            next()
        }else{
-            return res.status(401).json({massage:"Please Enter Vaild Token..."})
+            return res.status(401).json({success:false, message:"Please Enter Vaild Token..."})
        }
     } catch (error) {
-        res.status(401).json({massage: `${error} Not Authorized User...`})
+        res.status(401).json({success:false, message: `${error} Not Authorized User...`})
     }
 }
