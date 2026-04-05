@@ -51,6 +51,18 @@ export const createCaseAIthinking = async(req, res)=>{
         return res.status(404).json({success:false, message: "All Feild Required..."})
     }
     // console.log("hello")
+
+    let proofFiles = []
+
+    if(req.file && req.file.length > 0){
+        proofFiles.map((ele)=>{
+            return {
+                fileName : ele.fileName,
+                fileURL : ele.fle
+            }
+        })
+    }
+
     try {
         
         let clientCase = await ClientCaseModel.create({
