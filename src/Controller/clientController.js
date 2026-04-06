@@ -63,6 +63,7 @@ export const createCaseAIthinking = async(req, res)=>{
         })
     }
 
+    console.log(proofFiles)
     try {
         
         let clientCase = await ClientCaseModel.create({
