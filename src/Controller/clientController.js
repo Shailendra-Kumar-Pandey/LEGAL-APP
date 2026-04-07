@@ -44,13 +44,13 @@ export const AiGetInformation = async(req, res)=>{
 export const createCaseAIthinking = async(req, res)=>{
 
     let userId = req.userID;
-    // console.log(userId)
+    console.log(userId)
     const {problemStatement, location, caseDate } = req.body;
+
+    console.log(req.file)
     
-    if(!problemStatement || !location || !caseDate){
-        return res.status(404).json({success:false, message: "All Feild Required..."})
-    }
-    // console.log("hello")
+    console.log(problemStatement, location, caseDate)
+    console.log("hello")
 
     let proofFiles = []
 
@@ -58,12 +58,13 @@ export const createCaseAIthinking = async(req, res)=>{
         proofFiles.map((ele)=>{
             return {
                 fileName : ele.fileName,
-                fileURL : ele.fle
+                fileURL : ele.fileURL
             }
         })
     }
 
     console.log(proofFiles)
+    // return
     try {
         
         let clientCase = await ClientCaseModel.create({
